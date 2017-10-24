@@ -1,0 +1,110 @@
+***********************//////////Gabby Mora////////////************************************************
+
+/////////*Problem Set 3*//////
+////////*Data Management*/////
+////////*Fall 2017*//////////
+
+---------------------------------------------------------------------------------------------------------------------
+*********************************************************************************************************************
+---------------------------------------------------------------------------------------------------------------------
+Merging Data
+---------------------------------------------------------------------------------------------------------------------
+*********************************************************************************************************************
+---------------------------------------------------------------------------------------------------------------------
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlS19LS0Z1cnVoQkE&export=download", firstrow clear
+
+edit
+
+rename (IncidentZip) (zipcode)
+
+drop UniqueKey CreatedDate ClosedDate Agency IncidentAddress StreetName CrossStreet1 CrossStreet2 IntersectionStreet1 IntersectionStreet2 AddressType Landmark Status DueDate ResolutionActionUpdatedDate CommunityBoard Borough XCoordinateStatePlane YCoordinateStatePlane ParkFacilityName ParkBorough SchoolName SchoolNumber SchoolRegion SchoolCode SchoolPhoneNumber SchoolAddress SchoolCity SchoolState SchoolZip SchoolNotFound SchoolorCitywideComplaint VehicleType TaxiCompanyBorough TaxiPickUpLocation BridgeHighwayName BridgeHighwayDirection RoadRamp BridgeHighwaySegment GarageLotName FerryDirection FerryTerminalName Latitude Longitude Location
+
+save animalabuse
+//file animalabuse.dta saved//
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlMURzMmVjUExDRjg&export=download", firstrow clear
+
+rename (JURISDICTIONNAME) (zipcode)
+
+save demographics 
+//file demographics.dta saved//
+
+use animalabuse.dta
+
+merge m:1 zipcode using demographics
+//  Result                           # of obs.//
+    -----------------------------------------
+//    not matched                       231
+//    from master                         0  (_merge==1)
+//    from using                        231  (_merge==2)
+
+//    matched                           634  (_merge==3)//
+
+
+save animalabusedemographics, replace
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlWnhZVkFzN1pNZ28&export=download", firstrow clear
+
+rename (ZipCodes) (zipcode)
+
+drop EventID StartDateTime EndDateTime EnteredOn CommunityBoards Country
+
+save filmingpermits, replace
+//file filmingpermits.dta saved//
+
+//when I tried to merge filmingpermits and animalabuse, I learned that the zipcode variable in filmingpermits is a string//
+
+destring (zipcode), generate(zipcode2)
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlSmdVS2swdU4ycVE&export=download", firstrow clear
+
+rename (ZipCode) (zipcode)
+
+drop SiteID AgencyID Address City Borough State BriefDescription AgesServed GendersServed RequiredDocuments Website PhoneNumber BuildingFloorSuite AdditionalInformation
+
+save HIVtestingcenters
+//save HIVtestingcenters//
+
+****************//NEED TO DESTRING//***************
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlRGQ5ZC1aYW9nYzA&export=download", firstrow clear
+
+rename (Postcode) (zipcode)
+
+drop PropID Boro CommunityBoard CouncilDistrict CrossStreets Latitude Longitude CensusTract BIN BBL NTA
+
+save gardens
+//file gardens.dta saved//
+
+****************//NEED TO DESTRING//***************
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlTUhfR3ZQQ3hyZlE&export=download", firstrow clear
+
+rename (ZipCode) (zipcode)
+
+drop AdditionalInformation
+
+save farmersmarkets
+//file farmersmarkets.dta saved//
+
+collapse (count) Lat, by(zipcode)
+//counts the number of same zip code for the specified variable [in this case, Lat] so they are individual zip codes that can be matched)
+
+edit
+
+save corr, replace
+
+
+use animalabuse.dta, clear
+
+merge m:1 zipcode using corr
+
+// Result                           # of obs.
+    -----------------------------------------
+ // not matched                             0
+ // matched                                71  (_merge==3)//
+    -----------------------------------------
+
+
+
