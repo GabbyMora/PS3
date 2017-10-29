@@ -12,6 +12,11 @@ Merging Data
 *********************************************************************************************************************
 ---------------------------------------------------------------------------------------------------------------------
 
+//but there are only 2 merges here, need more! again there is a lot of data at zipcode level
+//googling "zipcode level data" yields a lot!
+// https://www.google.com/search?q=zipcode+level+data&ie=utf-8&oe=utf-8
+//will have much more comments mon or tues!
+
 import excel "https://docs.google.com/uc?id=0BywXSn44t-HlS19LS0Z1cnVoQkE&export=download", firstrow clear
 
 edit
