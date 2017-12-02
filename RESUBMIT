@@ -1,0 +1,469 @@
+************************************************//////////Gabby Mora////////////*******************************************************
+
+                                               /////////*Problem Set 3*//////
+                                               ////////*Data Management*/////
+                                               //////////*Fall 2017*/////////
+                                               //////////*RESUBMIT*//////////
+
+
+/*--------------------------------------------------------------------------------------------------------------------------------------
+****************************************************************************************************************************************
+----------------------------------------------------------------------------------------------------------------------------------------
+                                                    CLEAN UP MY DATASETS
+----------------------------------------------------------------------------------------------------------------------------------------
+****************************************************************************************************************************************
+--------------------------------------------------------------------------------------------------------------------------------------*/
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlS19LS0Z1cnVoQkE&export=download", firstrow clear
+ 
+/*______________________________________________________________________________________________________________________________________
+                                                CLEAN UP ANIMAL CRUELTY DATASET
+______________________________________________________________________________________________________________________________________*/
+
+drop UniqueKey CreatedDate ClosedDate Agency IncidentAddress StreetName CrossStreet1 CrossStreet2 IntersectionStreet1 IntersectionStreet2 AddressType Landmark Status DueDate ResolutionActionUpdatedDate CommunityBoard Borough XCoordinateStatePlane YCoordinateStatePlane ParkFacilityName ParkBorough SchoolName SchoolNumber SchoolRegion SchoolCode SchoolPhoneNumber SchoolAddress SchoolCity SchoolState SchoolZip SchoolNotFound SchoolorCitywideComplaint VehicleType TaxiCompanyBorough TaxiPickUpLocation BridgeHighwayName BridgeHighwayDirection RoadRamp BridgeHighwaySegment GarageLotName FerryDirection FerryTerminalName Latitude Longitude Location
+
+edit 
+ 
+tab Descriptor
+
+/*
+
+               Descriptor |      Freq.     Percent        Cum.
+--------------------------+-----------------------------------
+                  Chained |         40        6.31        6.31
+                   In Car |         38        5.99       12.30
+                Neglected |        292       46.06       58.36
+               No Shelter |         23        3.63       61.99
+Other (complaint details) |        149       23.50       85.49
+                 Tortured |         92       14.51      100.00
+--------------------------+-----------------------------------
+                    Total |        634      100.00
+*/
+
+describe Descriptor
+
+/*
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------------------------------------------------------------
+Descriptor      str25   %25s                  Descriptor
+
+*/
+
+encode Descriptor, generate(Descriptor_n)
+
+/*
+
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+Descriptor_n |        634    3.755521    1.423736          1          6
+
+*/
+
+move Descriptor_n Descriptor
+
+drop Descriptor
+
+rename Descriptor_n Descriptor
+
+tab LocationType
+
+/*
+             Location Type |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+                Commercial |          2        0.32        0.32
+           House and Store |          3        0.47        0.79
+           Park/Playground |         14        2.21        3.00
+      Residential Building |         18        2.84        5.84
+Residential Building/House |        379       59.78       65.62
+          Store/Commercial |         52        8.20       73.82
+           Street/Sidewalk |        166       26.18      100.00
+---------------------------+-----------------------------------
+                     Total |        634      100.00
+
+*/
+
+describe LocationType
+
+/*
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------------------------------------------------------------
+LocationType    str26   %26s                  Location Type
+
+*/
+
+encode LocationType, generate(LocationType_n)
+
+summarize LocationType_n
+
+/*
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+LocationTy~n |        634    5.506309    1.041383          1          7
+
+*/
+
+move LocationType_n LocationType
+
+drop LocationType
+
+rename LocationType_n LocationType
+
+rename IncidentZip ZipCode
+
+save Animal_Abuse_COMPLETE, replace
+
+/*______________________________________________________________________________________________________________________________
+                                              CLEAN UP HIV TESTING CENTERS DATASET
+______________________________________________________________________________________________________________________________*/
+
+clear
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlSmdVS2swdU4ycVE&export=download", firstrow clear
+
+drop SiteID AgencyID Address City Borough State BriefDescription AgesServed GendersServed RequiredDocuments Website PhoneNumber BuildingFloorSuite AdditionalInformation
+
+drop HoursMonday HoursTuesday HoursWednesday HoursThursday HoursFriday HoursSaturday HoursSunday Intake OtherInsurances SiteLanguages
+
+encode ZipCode, generate(ZipCode_n)
+
+drop ZipCode
+
+rename ZipCode_n ZipCode
+
+replace ZipCode=0 if ZipCode==.
+
+save HIV_Testing_Centers_Clean, replace
+
+/*_____________________________________________________________________________________________________________________________
+                                              CLEAN UP DEMOGRAPHICS DATASET
+_____________________________________________________________________________________________________________________________*/
+
+clear
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlMURzMmVjUExDRjg&export=download", firstrow clear
+
+rename JURISDICTIONNAME ZipCode
+
+drop COUNTGENDERUNKNOWN PERCENTGENDERUNKNOWN PERCENTFEMALE PERCENTMALE COUNTGENDERTOTAL PERCENTGENDERTOTAL PERCENTPACIFICISLANDER PERCENTHISPANICLATINO PERCENTAMERICANINDIAN PERCENTASIANNONHISPANIC PERCENTWHITENONHISPANIC PERCENTBLACKNONHISPANIC PERCENTOTHERETHNICITY PERCENTETHNICITYUNKNOWN COUNTETHNICITYTOTAL PERCENTETHNICITYTOTAL COUNTPERMANENTRESIDENT PERCENTPERMANENTRESIDENT COUNTUSCITIZEN PERCENTUSCITIZEN COUNTOTHERCITIZENSTATUS PERCENTOTHERCITIZENSTATUS COUNTCITIZENSTATUSUNKNOWN PERCENTCITIZENSTATUSUNKNOWN COUNTCITIZENSTATUSTOTAL PERCENTCITIZENSTATUSTOTAL PERCENTRECEIVESPUBLICASSISTAN PERCENTNRECEIVESPUBLICASSISTA PERCENTPUBLICASSISTANCEUNKNOW PERCENTPUBLICASSISTANCETOTAL
+
+rename(COUNTPARTICIPANTS COUNTFEMALE COUNTMALE COUNTPACIFICISLANDER COUNTHISPANICLATINO COUNTAMERICANINDIAN COUNTASIANNONHISPANIC COUNTWHITENONHISPANIC COUNTBLACKNONHISPANIC COUNTOTHERETHNICITY COUNTETHNICITYUNKNOWN COUNTRECEIVESPUBLICASSISTANCE COUNTNRECEIVESPUBLICASSISTANC COUNTPUBLICASSISTANCEUNKNOWN) (TotalParticipants Female Male PacificIslander HispanicLatino AmericanIndian Asian White AfricanAmerican OtherEthnicity EthnicityUnknown PublicAssistance NoPublicAssistance PublicAssistanceUnknown)
+
+save Demographics_Clean, replace
+
+/*_____________________________________________________________________________________________________________________________
+                                              CLEAN UP FILMING PERMITS DATASET
+_____________________________________________________________________________________________________________________________*/
+
+clear
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlWnhZVkFzN1pNZ28&export=download", firstrow clear
+
+drop EventID StartDateTime EndDateTime EnteredOn CommunityBoards Country ParkingHeld EventAgency SubCategoryName 
+
+rename ZipCodes ZipCode
+
+gen newzip=substr(ZipCode, 1, 5)
+
+gen newzip2=substr(ZipCode, -5, 5) 
+
+drop ZipCode
+
+rename newzip ZipCode
+
+drop newzip2
+
+encode ZipCode, generate(ZipCode_n)
+
+drop ZipCode
+
+rename ZipCode_n ZipCode
+
+save Filming_Permits_Clean, replace
+
+/*______________________________________________________________________________
+                                              CLEAN UP GARDENS DATASET
+______________________________________________________________________________*/
+
+clear
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlRGQ5ZC1aYW9nYzA&export=download", firstrow clear
+
+drop PropID Boro CommunityBoard CouncilDistrict CrossStreets Latitude Longitude 
+CensusTract BIN BBL NTA
+
+rename Postcode ZipCode
+
+encode ZipCode, generate(ZipCode_n)
+
+drop ZipCode
+
+rename ZipCode_n ZipCode
+
+replace ZipCode=0 if ZipCode==.
+
+save Gardens_Clean, replace
+
+/*______________________________________________________________________________
+                      CLEAN UP FARMERS MARKET DATASET
+________________________________________________________________________________*/
+
+clear
+
+import excel "https://docs.google.com/uc?id=0BywXSn44t-HlTUhfR3ZQQ3hyZlE&export=download", firstrow clear
+
+drop AdditionalInformation Latitude Longitude
+
+save Farmers_Markets_Clean, replace
+
+********************************************************************************
+/*------------------------------------------------------------------------------
+********************************************************************************
+--------------------------------------------------------------------------------
+                                              MERGING MY DATASETS BY ZIPCODE 
+--------------------------------------------------------------------------------
+********************************************************************************
+------------------------------------------------------------------------------*/
+
+********************************************************************************
+/*HIV TESTING CENTERS DATASET*/
+
+use "Animal_Abuse_COMPLETE"
+
+merge m:m ZipCode using "HIV_Testing_Centers_Clean"
+
+/*
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         1,233
+        from master                       634  (_merge==1)
+        from using                        599  (_merge==2)
+
+    matched                                 0  (_merge==3)
+    -----------------------------------------
+*/
+
+********************************************************************************
+/*DEMOGRAPHICS DATASET*/
+
+drop _merge
+
+merge m:m ZipCode using "Demographics_Clean"
+/*Stata said variable Merge was already defined so I decided to drop it so I 
+could merge the second dataset to my master dataset*/
+
+drop _merge
+
+merge m:m ZipCode using "Demographics_Clean"
+
+/*
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           830
+        from master                       599  (_merge==1)
+        from using                        231  (_merge==2)
+
+    matched                               634  (_merge==3)
+    -----------------------------------------
+*/
+
+********************************************************************************
+/*FILMING PERMITS DATASET*/
+
+drop _merge
+
+merge m:m ZipCode using "Filming_Permits_Clean"
+
+/*
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         4,615
+        from master                       959  (_merge==1)
+        from using                      3,656  (_merge==2)
+
+    matched                            40,437  (_merge==3)
+    -----------------------------------------
+*/
+
+********************************************************************************
+/*GARDENS DATASET*/
+
+drop _merge
+
+merge m:m ZipCode using "Gardens_Clean"
+
+/*
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                        20,667
+        from master                    20,667  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                            24,458  (_merge==3)
+    -----------------------------------------
+*/
+
+********************************************************************************
+/*FARMERS MARKET DATASET*/
+
+drop _merge
+
+merge m:m ZipCode using "Farmers_Markets_Clean"
+
+/*
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                        44,697
+        from master                    44,694  (_merge==1)
+        from using                          3  (_merge==2)
+
+    matched                               460  (_merge==3)
+    -----------------------------------------
+*/
+
+drop _merge
+
+save Animal_Abuse_COMPLETE, replace
+
+/*------------------------------------------------------------------------------
+********************************************************************************
+--------------------------------------------------------------------------------
+                     POST-MERGING CLEANING AND RESHAPING
+--------------------------------------------------------------------------------
+********************************************************************************
+------------------------------------------------------------------------------*/
+
+
+replace Descriptor=0 if Descriptor==.
+/*Since Descriptor is my independent variable, any observations that do not 
+include a Descriptor are irrelevant to my research*/
+
+collapse Descriptor, by (ZipCode) 
+
+drop if Descriptor==.
+
+/*
+     (mean) |
+ Descriptor |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        3.4 |          1       20.00       20.00
+   3.689655 |          1       20.00       40.00
+   3.716102 |          1       20.00       60.00
+       3.75 |          1       20.00       80.00
+   3.831325 |          1       20.00      100.00
+------------+-----------------------------------
+      Total |          5      100.00
+
+*/
+//this information was, once again, not helpful to me//
+
+tabulate ZipCode Descriptor
+
+/*
+Incident |                            Descriptor
+Zip      |Chained In Car  Neglected  No Shelte     Other  Tortured |     Total
+---------+-----------------------------------------------------------+----------
+   10002 |    18    12        111          9         50         36 |       236 
+   10003 |     4    14         47          6         39          6 |       116 
+   10009 |    14    11        120          8         50         46 |       249 
+   10013 |     1     1          1          0          1          1 |         5 
+   10038 |     3     0         13          0          9          3 |        28 
+---------+---------------------------------------------------------+----------
+   Total |    40    38        292         23        149         92 |       634 
+*/
+/*I was finally able to figure out how to see how many incidents per incident
+type happened in each zip code I went online to look up where zip code 10002 
+was located in NYC (since it has the largest number of incidents, and found it 
+is the East Village//
+Once I found this information I was realized that my Gardens dataset has 
+information on specific neighborhoords, including the East Village, so I 
+decided to look at some of the observations in that dataset*/
+
+use "Gardens_Clean"
+
+tab NeighborhoodName
+
+/*
+        NeighborhoodName |      Freq.     Percent        Cum.
+-------------------------+-----------------------------------
+                Melrose |          1        0.31        0.31
+                Bed-Stuy |         29        8.98        9.29
+                 Belmont |          1        0.31        9.60
+             Boerum Hill |          3        0.93       10.53
+        Brooklyn Heights |          1        0.31       10.84
+             Brownsville |         13        4.02       14.86
+                Bushwick |          5        1.55       16.41
+         Cambria Heights |          1        0.31       16.72
+          Central Harlem |          4        1.24       17.96
+                 Chelsey |          1        0.31       18.27
+            Clinton Hill |          3        0.93       19.20
+            Coney Island |          5        1.55       20.74
+                  Corona |          3        0.93       21.67
+                 Crotona |          2        0.62       22.29
+           Crown Heights |          7        2.17       24.46
+       Downtown Brooklyn |          2        0.62       25.08
+      Downtown Manhattan |          1        0.31       25.39
+             East Harlem |         32        9.91       35.29
+           East New York |         45       13.93       49.23
+            East Village |         35       10.84       60.06
+       East Williamsburg |          1        0.31       60.37
+            Far Rockaway |          3        0.93       61.30
+                Flushing |          1        0.31       61.61
+            Forest Hills |          1        0.31       61.92
+         Grand Concourse |          1        0.31       62.23
+              Greenpoint |          1        0.31       62.54
+       Greenwich Village |          1        0.31       62.85
+        Hamilton Heights |          8        2.48       65.33
+                  Harlem |          8        2.48       67.80
+          Hell's Kitchen |          3        0.93       68.73
+              Highbridge |          6        1.86       70.59
+           Highland Park |          1        0.31       70.90
+            Hunt's Point |          1        0.31       71.21
+                  Inwood |          1        0.31       71.52
+                 Jamaica |          3        0.93       72.45
+              Kensington |          2        0.62       73.07
+      Kingbridge Heights |          1        0.31       73.37
+     Kingsbridge Heights |          1        0.31       73.68
+        Long Island City |          1        0.31       73.99
+         Lower East Side |          7        2.17       76.16
+             Marble Hill |          1        0.31       76.47
+                 Melrose |         11        3.41       79.88
+                 Midtown |          1        0.31       80.19
+              Morrisania |          5        1.55       81.73
+              Mott Haven |          1        0.31       82.04
+                Mt. Eden |          2        0.62       82.66
+          North Flatbush |          1        0.31       82.97
+Ocean Hill / Brownsville |          1        0.31       83.28
+              Ozone Park |          1        0.31       83.59
+              Park Slope |          8        2.48       86.07
+        Prospect Heights |          4        1.24       87.31
+                Red Hook |          5        1.55       88.85
+        Roosevelt Island |          1        0.31       89.16
+           Schuylerville |          1        0.31       89.47
+          So. Ozone Park |          1        0.31       89.78
+               Soundview |          1        0.31       90.09
+     Springfield Gardens |          1        0.31       90.40
+             Sunset Park |          1        0.31       90.71
+                 Tremont |          1        0.31       91.02
+         Upper East Side |          1        0.31       91.33
+         Upper West Side |          7        2.17       93.50
+               Wakefield |          1        0.31       93.81
+      Washington Heights |          8        2.48       96.28
+              West Farms |          1        0.31       96.59
+             West Harlem |          3        0.93       97.52
+            West Village |          1        0.31       97.83
+            Williamsburg |          7        2.17      100.00
+-------------------------+-----------------------------------
+                   Total |        323      100.00
+*/
+
+//by looking at the frequency distribution, I can see that the East Village//
+// has 35 parks out of the total 323 parks in NYC//
+
+save "Animal_Abuse_COMPLETE"
