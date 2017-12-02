@@ -1,24 +1,23 @@
-************************************************//////////Gabby Mora////////////*******************************************************
+************************//////////Gabby Mora////////////************************
 
-                                               /////////*Problem Set 3*//////
-                                               ////////*Data Management*/////
-                                               //////////*Fall 2017*/////////
-                                               //////////*RESUBMIT*//////////
+                         /////////*Problem Set 3*//////
+                         ////////*Data Management*/////
+                         //////////*Fall 2017*/////////
+                         ///////////*RESUBMIT*/////////
 
-
-/*--------------------------------------------------------------------------------------------------------------------------------------
-****************************************************************************************************************************************
-----------------------------------------------------------------------------------------------------------------------------------------
-                                                    CLEAN UP MY DATASETS
-----------------------------------------------------------------------------------------------------------------------------------------
-****************************************************************************************************************************************
---------------------------------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+********************************************************************************
+--------------------------------------------------------------------------------
+                         CLEAN UP MY DATASETS
+--------------------------------------------------------------------------------
+********************************************************************************
+------------------------------------------------------------------------------*/
 
 import excel "https://docs.google.com/uc?id=0BywXSn44t-HlS19LS0Z1cnVoQkE&export=download", firstrow clear
  
-/*______________________________________________________________________________________________________________________________________
-                                                CLEAN UP ANIMAL CRUELTY DATASET
-______________________________________________________________________________________________________________________________________*/
+/*______________________________________________________________________________
+                        CLEAN UP ANIMAL CRUELTY DATASET
+______________________________________________________________________________*/
 
 drop UniqueKey CreatedDate ClosedDate Agency IncidentAddress StreetName CrossStreet1 CrossStreet2 IntersectionStreet1 IntersectionStreet2 AddressType Landmark Status DueDate ResolutionActionUpdatedDate CommunityBoard Borough XCoordinateStatePlane YCoordinateStatePlane ParkFacilityName ParkBorough SchoolName SchoolNumber SchoolRegion SchoolCode SchoolPhoneNumber SchoolAddress SchoolCity SchoolState SchoolZip SchoolNotFound SchoolorCitywideComplaint VehicleType TaxiCompanyBorough TaxiPickUpLocation BridgeHighwayName BridgeHighwayDirection RoadRamp BridgeHighwaySegment GarageLotName FerryDirection FerryTerminalName Latitude Longitude Location
 
@@ -45,7 +44,7 @@ describe Descriptor
 /*
               storage   display    value
 variable name   type    format     label      variable label
--------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 Descriptor      str25   %25s                  Descriptor
 
 */
@@ -89,7 +88,7 @@ describe LocationType
 /*
               storage   display    value
 variable name   type    format     label      variable label
--------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 LocationType    str26   %26s                  Location Type
 
 */
@@ -115,10 +114,9 @@ rename IncidentZip ZipCode
 
 save Animal_Abuse_COMPLETE, replace
 
-/*______________________________________________________________________________________________________________________________
-                                              CLEAN UP HIV TESTING CENTERS DATASET
-______________________________________________________________________________________________________________________________*/
-
+/*______________________________________________________________________________
+                     CLEAN UP HIV TESTING CENTERS DATASET
+______________________________________________________________________________*/
 clear
 
 import excel "https://docs.google.com/uc?id=0BywXSn44t-HlSmdVS2swdU4ycVE&export=download", firstrow clear
@@ -137,9 +135,9 @@ replace ZipCode=0 if ZipCode==.
 
 save HIV_Testing_Centers_Clean, replace
 
-/*_____________________________________________________________________________________________________________________________
-                                              CLEAN UP DEMOGRAPHICS DATASET
-_____________________________________________________________________________________________________________________________*/
+/*______________________________________________________________________________
+                       CLEAN UP DEMOGRAPHICS DATASET
+______________________________________________________________________________*/
 
 clear
 
@@ -153,9 +151,9 @@ rename(COUNTPARTICIPANTS COUNTFEMALE COUNTMALE COUNTPACIFICISLANDER COUNTHISPANI
 
 save Demographics_Clean, replace
 
-/*_____________________________________________________________________________________________________________________________
-                                              CLEAN UP FILMING PERMITS DATASET
-_____________________________________________________________________________________________________________________________*/
+/*______________________________________________________________________________
+                      CLEAN UP FILMING PERMITS DATASET
+______________________________________________________________________________*/
 
 clear
 
@@ -191,8 +189,7 @@ clear
 
 import excel "https://docs.google.com/uc?id=0BywXSn44t-HlRGQ5ZC1aYW9nYzA&export=download", firstrow clear
 
-drop PropID Boro CommunityBoard CouncilDistrict CrossStreets Latitude Longitude 
-CensusTract BIN BBL NTA
+drop PropID Boro CommunityBoard CouncilDistrict CrossStreets Latitude Longitude CensusTract BIN BBL NTA
 
 rename Postcode ZipCode
 
@@ -222,7 +219,7 @@ save Farmers_Markets_Clean, replace
 /*------------------------------------------------------------------------------
 ********************************************************************************
 --------------------------------------------------------------------------------
-                                              MERGING MY DATASETS BY ZIPCODE 
+                    MERGING MY DATASETS BY ZIPCODE 
 --------------------------------------------------------------------------------
 ********************************************************************************
 ------------------------------------------------------------------------------*/
@@ -465,5 +462,7 @@ Ocean Hill / Brownsville |          1        0.31       83.28
 
 //by looking at the frequency distribution, I can see that the East Village//
 // has 35 parks out of the total 323 parks in NYC//
+
+
 
 save "Animal_Abuse_COMPLETE"
