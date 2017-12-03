@@ -13,6 +13,9 @@
 ********************************************************************************
 ------------------------------------------------------------------------------*/
 
+
+
+
 import excel "https://docs.google.com/uc?id=0BywXSn44t-HlS19LS0Z1cnVoQkE&export=download", firstrow clear
  
 /*______________________________________________________________________________
@@ -26,7 +29,11 @@ edit
 tab Descriptor
 
 /*
-
+//general comment: you put a lot of output like tabs in comments
+//this is fine, but you probably do too much of that; better just comment on 
+//what the output is eg in beloiw:
+//tab var //most are neglected and other;and would be interestying to find
+//out what other catgeory means
                Descriptor |      Freq.     Percent        Cum.
 --------------------------+-----------------------------------
                   Chained |         40        6.31        6.31
@@ -227,9 +234,10 @@ save Farmers_Markets_Clean, replace
 ********************************************************************************
 /*HIV TESTING CENTERS DATASET*/
 
-use "Animal_Abuse_COMPLETE"
+use "Animal_Abuse_COMPLETE",clear
 
-merge m:m ZipCode using "HIV_Testing_Centers_Clean"
+merge m:m ZipCode using "HIV_Testing_Centers_Clean" //m:m is probably bad idea
+//probably want 1:1 or m:1 or 1:m; same below
 
 /*
     Result                           # of obs.
@@ -466,3 +474,4 @@ Ocean Hill / Brownsville |          1        0.31       83.28
 
 
 save "Animal_Abuse_COMPLETE"
+//looking forward to descriptive stats! essp graphs!
